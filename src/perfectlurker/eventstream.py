@@ -28,7 +28,7 @@ class EventStream:
         Create a new event stream that stores our consumers and will route events to them.
         """
 
-        self._consumers: List[TypedConsumerDelegate] = []
+        self._consumers: List[TypedConsumerDelegate[Event]] = []
 
     def add_consumer(self, consumer: Callable[[_E], Awaitable[None]]):
         """
@@ -49,7 +49,7 @@ class EventStream:
         param = list(sig.parameters.values())[0]
 
         log.debug("adding consumer: %s", sig)
-        self._consumers.append((param.annotation, consumer))
+        self._consumers.append((param.annotation, consumer))  # type: ignore
 
     async def send(self, ev: Event):
         """
@@ -58,5 +58,5 @@ class EventStream:
         log.debug("sending event: %s", ev)
 
         for con in self._consumers:
-            if isinstance(ev, con[0]):
+            if isinstance(ev, con[0]):  # type: ignore
                 await con[1](ev)
