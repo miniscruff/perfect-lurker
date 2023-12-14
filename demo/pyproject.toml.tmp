@@ -1,0 +1,53 @@
+[project]
+name = "perfect-lurker"
+version = "v0.0.0"
+description = "For lurkers, by lurkers."
+authors = [
+    {name = "Ronnie Smith", email = "miniscruff@hey.com"},
+]
+dependencies = []
+requires-python = ">=3.11"
+readme = "README.md"
+license = {text = "MIT"}
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "pytest==7.4.2",
+    "black==23.9.1",
+    "pytest-cov==4.1.0",
+    "pdoc==14.1.0",
+    "pytest-asyncio==0.21.1",
+    "pyright==1.1.329",
+]
+
+[tool.pdm.scripts]
+lint = "pyright"
+format = "black ."
+test = "pytest"
+testv = "pytest -v"
+docs = "pdoc src/perfectlurker"
+
+[tool.pyright]
+include = ["src", "tests"]
+exclude = [
+    "**/__pycache__",
+]
+defineConstant = { DEBUG = true }
+reportMissingImports = true
+reportMissingTypeStubs = false
+typeCheckingMode = "strict"
+
+[tool.pytest.ini_options]
+addopts = "--cov=src/perfectlurker --cov-report term --cov-report=html --cov-branch"
+testpaths = [
+    "tests",
+]
+
+[tool.coverage.report]
+exclude_also = [
+    "def __repr__",
+    "if TYPE_CHECKING:",
+    "# nocov",
+    "def __repr__",
+    "def __eq__",
+]
