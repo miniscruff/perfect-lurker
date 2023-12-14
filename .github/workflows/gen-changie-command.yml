@@ -18,11 +18,10 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v4
       with:
-        ref: ${{ github.event.pull_request.head.ref }}
+        ref: ${{ github.event.pull_request.headRefName }}
 
     - name: Add env vars
       run: |
-        echo "${{toJson(gtihub.event.pull_request)}}"
         echo COMMAND=$(echo "${{ github.event.comment.body }}" | cut -c10-) >> $GITHUB_ENV
         cat $GITHUB_ENV
 
