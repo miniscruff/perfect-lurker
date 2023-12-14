@@ -1,5 +1,9 @@
 name: Run changie from PR comment
 
+permissions:
+  contents: write
+  pull-requests: write
+
 on:
   issue_comment:
     types: [created]
