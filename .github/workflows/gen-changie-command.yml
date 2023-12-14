@@ -1,5 +1,9 @@
 name: Run changie from PR comment
 
+permissions:
+  contents: write
+  pull-requests: write
+
 on:
   issue_comment:
     types: [created]
@@ -8,7 +12,7 @@ jobs:
   # This job only runs for pull request comments
   pr-changie-work:
     name: PR comment
-    if: "${{ github.event.issue.pull_request}} && startsWith(github.event.issue_comment.comment.body, '/changie')}}"
+    if: "${{ github.event.issue.pull_request && startsWith(github.event.issue_comment.comment.body, '/changie')}}"
     runs-on: ubuntu-latest
     steps:
     - name: Check out code
