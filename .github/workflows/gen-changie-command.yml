@@ -8,7 +8,7 @@ jobs:
   # This job only runs for pull request comments
   pr-changie-work:
     name: PR comment
-    if: "${{ github.event.issue.pull_request}}" # && startsWith(github.event.issue_comment.comment.body, '/changie')}}"
+    if: "${{ github.event.issue.pull_request}} && startsWith(github.event.issue_comment.comment.body, '/changie')}}"
     runs-on: ubuntu-latest
     steps:
     - name: Check out code
@@ -23,12 +23,11 @@ jobs:
       uses: miniscruff/changie-action@v2
       with:
         args: ${{ env.COMMAND }}
-        # run: |
-        # echo $CMD
-        # git status
 
-        # - name: Create Pull Request
-        # uses: peter-evans/create-pull-request@v5
-        # with:
-        # commit-message: Ran changie from comment
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v5
+      with:
+        commit-message: |
+          Ran changie from comment
+          "changie ${{ env.COMMAND }}"
 
