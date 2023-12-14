@@ -18,7 +18,7 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v4
       with:
-        ref: ${{ github.event.pull_request.base.sha }}
+        ref: ${{ github.event.pull_request.head.sha }}
 
     - name: Add env vars
       run: |
@@ -30,8 +30,11 @@ jobs:
       with:
         args: ${{ env.COMMAND }}
 
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v5
-      with:
-        commit-message: "Ran changie from comment: ${{ env.COMMAND }}"
+    - name: Update PR
+      run: |
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git add .
+        git commit -m "Ran changie action from command"
+        git push
 
