@@ -1,0 +1,40 @@
+name: Run changie from PR comment
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  # This job only runs for pull request comments
+  pr-changie-work:
+    name: PR comment
+    if: "${{ github.event.issue.pull_request}}" # && startsWith(github.event.issue_comment.comment.body, '/changie')}}"
+    runs-on: ubuntu-latest
+    steps:
+    - name: Setup Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: 1.21
+
+    - name: Check out code
+      uses: actions/checkout@v4
+
+    - name: Add env vars
+      run: |
+        export COMMAND=$(echo "${{ github.event.issue_comment.comment.body }}" | cut -c10-) >> $GITHUB_ENV
+
+    - name: Run changie
+      uses: miniscruff/changie-action@v2
+      env:
+        COMMENT: "${{ github.event.issue_comment.comment.body }}"
+      with:
+        args: ${{ env.COMMAND }}
+        # run: |
+        # echo $CMD
+        # git status
+
+        # - name: Create Pull Request
+        # uses: peter-evans/create-pull-request@v5
+        # with:
+        # commit-message: Ran changie from comment
+
