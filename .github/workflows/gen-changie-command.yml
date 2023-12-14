@@ -17,6 +17,8 @@ jobs:
     steps:
     - name: Check out code
       uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.pull_request.base.sha }}
 
     - name: Add env vars
       run: |
@@ -31,7 +33,5 @@ jobs:
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v5
       with:
-        commit-message: |
-          Ran changie from comment
-          "changie ${{ env.COMMAND }}"
+        commit-message: "Ran changie from comment: ${{ env.COMMAND }}"
 
